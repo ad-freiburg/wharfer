@@ -41,7 +41,7 @@ there are some differences.
 A simple ephermal (through `--rm`) container running the `busybox` shell can be
 executed as follows
 
-    wharfer run --rm -it --name whafer_busybox busybox:latest
+    wharfer run --rm -it --name wharfer_busybox busybox:latest
 
 The following `docker` commands are currently supported in some form
 
