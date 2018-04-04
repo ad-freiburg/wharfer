@@ -1,19 +1,25 @@
-Restricting Wrapper Around docker
-=================================
+Restricted Docker Wrapper
+=========================
+
+**WARNING THIS IS VERY EXPERIMENTAL WITH NO CLAIM OF ACTUAL SECURITY**
 
 This is a wrapper around the docker command that only allows some basic
 commands and flags. This can be used in addition to [No Trivial Root for
 Docker](https://github.com/ad-freiburg/docker-no-trivial-root) to further
-restrict access. Also if used with `setgid` and the `docker` group this can be
-used to give very restricted docker access to users not in the docker group.
+restrict access. Also if used with `setgid` and the `docker` group it can be
+used to give this restricted docker access to users not in the docker group.
 
-To build run
+Building
+--------
+Make sure you have a Go environment [set up](https://golang.org/doc/install)
+then do
 
-    go build
+    go get github.com/ad-freiburg/dockwrap
 
-Then to install 
+Installing
+----------
 
-    sudo cp dockwrap /usr/bin/
+    sudo cp $GOPATH/bin/dockwrap /usr/bin/
     sudo chown root:docker /usr/bin/dockwrap 
     sudo chmod g+s /usr/bin/dockwrap`
 
