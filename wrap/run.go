@@ -21,7 +21,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.Var(&run.Ports, "p", "Port to expose in hostPort:containerPort format")
 	run.Cmd.BoolVar(&run.Remove, "rm", false, "Remove container after running it")
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
-	run.Cmd.BoolVar(&run.InteractiveTTY, "it", true, "Run container interactively (default unlike in docker)")
+	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively (default unlike in docker)")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
 }
 
