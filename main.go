@@ -11,7 +11,6 @@ import (
 
 func execDocker(args ...string) {
 	const dockerbin = "/usr/bin/docker"
-	fmt.Fprintln(os.Stderr, "Executing docker", strings.Join(args, " "))
 	cmd := exec.Command(dockerbin, args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout

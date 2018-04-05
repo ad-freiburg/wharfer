@@ -3,14 +3,14 @@ Wharfer
 **WARNING THIS IS VERY EXPERIMENTAL WITH NO CLAIM OF ACTUAL SECURITY**
 
 `wharfer` (pronounced /wɔɹfɚ/ from wharf ≈ pier ≈ dock) is a wrapper around the
-docker command that only allows some basic commands and flags with the goal of
-enabling `docker` usage by students on shared Linux machines. In the future we
+`docker` command that only allows some basic commands and flags with the goal of
+enabling `docker` usage by e.g. students on shared Linux machines. In the future we
 may add support for access control using the Unix user running the command.
 Wharfer should be used together with the ["No Trivial Root for
 Docker"](https://github.com/ad-freiburg/docker-no-trivial-root) authorization
 plugin though technically it works without it. Also if used with `setgid`
-and the `docker` group it allows a restricted access to docker while allowing
-full docker access for everyone in the docker group.
+and the `docker` group it allows a restricted access to `docker` while allowing
+full `docker` access for everyone in the `docker` group.
 
 Building
 --------
@@ -28,9 +28,9 @@ Installing
 
 Also *make sure that the executable is only writable by root*
 
-Running
-------
-wharfer tries to be a drop-in replacement of docker for simple tasks. Though
+Using wharfer
+-------------
+`wharfer` tries to be a drop-in replacement of `docker` for simple tasks. Though
 there are some differences.
 
 - Due to the use of the Go `flag` package not all options have long and short
@@ -38,10 +38,33 @@ there are some differences.
 - `-it` which in `docker` is a combination of the `-i` and `-t` options is only
   one option in `wharfer`
 
+### Running Containers
+
 A simple ephermal (through `--rm`) container running the `busybox` shell can be
 executed as follows
 
     wharfer run --rm -it --name wharfer_busybox busybox:latest
+
+### Building Containers
+Using the busybox container from the previous section we can also build
+a custom image just like with `docker`
+
+
+    tee hello.sh <<EOF
+     #!/bin/sh
+     echo 'Hello, World!'
+     EOF
+
+    tee Dockerfile <<EOF
+     FROM busybox:latest
+     COPY hello.sh /app/
+     CMD ["/bin/sh", "/app/hello.sh"]
+     EOF
+
+    wharfer build -t hellobusy .
+    wharfer run --rm hellobusy
+
+### Supported commands
 
 The following `docker` commands are currently supported in some form
 
@@ -53,3 +76,34 @@ The following `docker` commands are currently supported in some form
 
 To see the supported flags run `wharfer COMMAND --help`
 
+A note on Volumes
+-----------------
+`wharfer run` supports the `-v` flag for mounting volumes (directories) inside
+the container. However there are a few restrictions. Unlike with `docker` named
+volumes are not supported and only mounting host directories through the `-v
+/host/path:/container/path` syntax is allowed. As with `docker` only absolute
+paths work.
+
+When `wharfer` is used with user namespaces activated in the docker daemon (as
+it should be) 
+
+**you need to make sure the permissions in your volumes are appropriately set**
+
+For example in our default configuration `root` inside the container is mapped
+to `nobody` outside the container. Thus if you want to write to a host
+directory you need to make it writeable for `nobody`. Since a non-root user
+can't change ownership of a directory the easiest way to make a local directory
+writeable for `nobody` is to use `chown o+w hostdir.
+
+An example using the busybox container goes as follows
+
+    mkdir writetest
+    chmod o+w writetest
+    wharfer run --rm -it --name wharfer_busybox -v $(pwd)/writetest:/writetest busybox:latest 
+    # and then inside the container
+    / # echo 'Hello, World!' > /writestest/hello.txt
+    / # exit
+    # and check the result on the host, the file hello.txt should be owned by
+    # nobody
+    ls -la writetest
+    cat writetest/hello.txt

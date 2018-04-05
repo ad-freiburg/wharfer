@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 )
 
 type Run struct {
 	Cmd            *flag.FlagSet
 	Ports          StringSliceFlag
+	Volumes        StringSliceFlag
 	Remove         bool
 	Detach         bool
 	InteractiveTTY bool
@@ -18,6 +20,7 @@ type Run struct {
 
 func (run *Run) InitFlags() {
 	run.Cmd = flag.NewFlagSet("run", flag.ExitOnError)
+	run.Cmd.Var(&run.Volumes, "v", "Volume to bind in container /host:/container format (must be absolute)")
 	run.Cmd.Var(&run.Ports, "p", "Port to expose in hostPort:containerPort format")
 	run.Cmd.BoolVar(&run.Remove, "rm", false, "Remove container after running it")
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
@@ -52,6 +55,17 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 				os.Exit(3)
 			}
 			args = append(args, "-p", runPort)
+		}
+	}
+
+	if len(run.Volumes) > 0 {
+		for _, runVolume := range run.Volumes {
+			if !strings.HasPrefix(runVolume, "/") {
+				fmt.Fprintln(os.Stderr, "Only absolute paths and host directories are allowed.")
+				fmt.Fprintln(os.Stderr, "TIP: use `-v $(pwd)/dir:/dir` to mount a subdirectory of your working directory")
+				os.Exit(3)
+			}
+			args = append(args, "-v", runVolume)
 		}
 	}
 
