@@ -3,13 +3,13 @@ Wharfer
 **WARNING THIS IS VERY EXPERIMENTAL WITH NO CLAIM OF ACTUAL SECURITY**
 
 `wharfer` (pronounced /wɔɹfɚ/ from wharf ≈ pier ≈ dock) is a wrapper around the
-`docker` command that only allows some basic commands and flags with the goal of
-enabling `docker` usage by e.g. students on shared Linux machines. In the future we
-may add support for access control using the Unix user running the command.
-Wharfer should be used together with the ["No Trivial Root for
+`docker` command that only allows some basic commands and flags with the goal
+of enabling `docker` usage by students on shared Linux machines. In the future
+we may add access control for removing and killing containers using Unix
+accounts.  Wharfer should be used together with the ["No Trivial Root for
 Docker"](https://github.com/ad-freiburg/docker-no-trivial-root) authorization
-plugin though technically it works without it. Also if used with `setgid`
-and the `docker` group it allows a restricted access to `docker` while allowing
+plugin though technically it works without it. Also if used with `setgid` and
+the `docker` group it allows a restricted access to `docker` while allowing
 full `docker` access for everyone in the `docker` group.
 
 Building
