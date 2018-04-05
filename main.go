@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/ad-freiburg/wharfer/wrap"
 	"log"
 	"os"
 	"os/exec"
-	"strings"
+
+	"github.com/ad-freiburg/wharfer/wrap"
 )
 
 func execDocker(args ...string) {

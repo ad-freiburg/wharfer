@@ -14,6 +14,7 @@ type Run struct {
 	Volumes        StringSliceFlag
 	Remove         bool
 	Detach         bool
+	Init           bool
 	InteractiveTTY bool
 	Name           string
 }
@@ -23,6 +24,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.Var(&run.Volumes, "v", "Volume to bind in container /host:/container format (must be absolute)")
 	run.Cmd.Var(&run.Ports, "p", "Port to expose in hostPort:containerPort format")
 	run.Cmd.BoolVar(&run.Remove, "rm", false, "Remove container after running it")
+	run.Cmd.BoolVar(&run.Init, "init", false, "Use docker-init enabling the reaping of zombie processes")
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively (default unlike in docker)")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
@@ -33,6 +35,10 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 	args := []string{"run"}
 	if run.Name != "" {
 		args = append(args, "--name", run.Name)
+	}
+
+	if run.Init {
+		args = append(args, "--init")
 	}
 
 	if run.Remove {
