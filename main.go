@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/ad-freiburg/dockwrap/wrap"
+	"github.com/ad-freiburg/wharfer/wrap"
 	"log"
 	"os"
 	"os/exec"
