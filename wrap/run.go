@@ -17,6 +17,7 @@ type Run struct {
 	Init           bool
 	InteractiveTTY bool
 	Name           string
+	RestartPolicy  string
 }
 
 func (run *Run) InitFlags() {
@@ -28,6 +29,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively (default unlike in docker)")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
+	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
 }
 
 func (run *Run) ParseToArgs(rawArgs []string) []string {
@@ -35,6 +37,10 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 	args := []string{"run"}
 	if run.Name != "" {
 		args = append(args, "--name", run.Name)
+	}
+
+	if run.RestartPolicy != "" {
+		args = append(args, "--restart", run.RestartPolicy)
 	}
 
 	if run.Init {

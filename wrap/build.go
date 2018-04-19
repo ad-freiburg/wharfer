@@ -5,28 +5,44 @@ import (
 )
 
 type Build struct {
-	Cmd     *flag.FlagSet
-	Tag     string
-	NoCache bool
+	Cmd       *flag.FlagSet
+	Tag       string
+	NoCache   bool
+	BuildArgs StringSliceFlag
+	File      string
 }
 
 func (build *Build) InitFlags() {
 	const tagUsage = "Tag of the image in name:tag format"
+	const fileUsage = "Explicit Dockerfile to use"
 	build.Cmd = flag.NewFlagSet("build", flag.ExitOnError)
 	build.Cmd.StringVar(&build.Tag, "tag", "", tagUsage)
 	build.Cmd.StringVar(&build.Tag, "t", "", tagUsage+" (shorthand)")
+	build.Cmd.StringVar(&build.File, "file", "", fileUsage)
+	build.Cmd.StringVar(&build.File, "f", "", fileUsage+" (shorthand)")
+	build.Cmd.Var(&build.BuildArgs, "build-arg", "Set build-time variables")
 	build.Cmd.BoolVar(&build.NoCache, "no-cache", false, "Disable caching to rebuild from scratch")
 }
 
 func (build *Build) ParseToArgs(rawArgs []string) []string {
 	build.Cmd.Parse(rawArgs)
 	args := []string{"build"}
+	if build.File != "" {
+		args = append(args, "--file", build.File)
+	}
+
 	if build.Tag != "" {
 		args = append(args, "--tag", build.Tag)
 	}
 
 	if build.NoCache {
 		args = append(args, "--no-cache")
+	}
+
+	if len(build.BuildArgs) > 0 {
+		for _, buildArg := range build.BuildArgs {
+			args = append(args, "--build-arg", buildArg)
+		}
 	}
 
 	if build.Cmd.NArg() > 0 {
