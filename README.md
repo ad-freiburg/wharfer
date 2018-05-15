@@ -23,8 +23,8 @@ Installing
 ----------
 
     sudo cp $GOPATH/bin/wharfer /usr/bin/
-    sudo chown root:docker /usr/bin/wharfer 
-    sudo chmod g+s /usr/bin/wharfer`
+    sudo chown root:docker /usr/bin/wharfer
+    sudo chmod g+s /usr/bin/wharfer
 
 Also *make sure that the executable is only writable by root*
 
@@ -85,7 +85,7 @@ volumes are not supported and only mounting host directories through the `-v
 paths work.
 
 When `wharfer` is used with user namespaces activated in the docker daemon (as
-it should be) 
+it should be)
 
 **you need to make sure the permissions in your volumes are appropriately set**
 
@@ -99,7 +99,7 @@ An example using the busybox container goes as follows
 
     mkdir writetest
     chmod o+w writetest
-    wharfer run --rm -it --name wharfer_busybox -v $(pwd)/writetest:/writetest busybox:latest 
+    wharfer run --rm -it --name wharfer_busybox -v $(pwd)/writetest:/writetest busybox:latest
     # and then inside the container
     / # echo 'Hello, World!' > /writestest/hello.txt
     / # exit
