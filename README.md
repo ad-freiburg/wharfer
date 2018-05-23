@@ -19,10 +19,19 @@ then do
 
     go get github.com/ad-freiburg/wharfer
 
+Alternatively you can download binary releases
+[here](https://github.com/ad-freiburg/wharfer/releases)
+
 Installing
 ----------
 
+    # For a build from source
     sudo cp $GOPATH/bin/wharfer /usr/bin/
+    # or for the binary release
+    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.1.0/wharfer_$(uname -m).tar.bz2
+    tar -xavf wharfer_$(uname -m).tar.bz2
+    sudo cp wharfer_$(uname -m)/wharfer /usr/bin/wharfer
+
     sudo chown root:docker /usr/bin/wharfer
     sudo chmod g+s /usr/bin/wharfer
 
