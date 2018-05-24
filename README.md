@@ -12,8 +12,8 @@ plugin though technically it works without it. Also if used with `setgid` and
 the `docker` group it allows a restricted access to `docker` while allowing
 full `docker` access for everyone in the `docker` group.
 
-Building/Download
------------------
+Build/Download
+--------------
 Make sure you have a Go environment [set up](https://golang.org/doc/install)
 then do
 
@@ -22,8 +22,8 @@ then do
 Alternatively you can download binary releases
 [here](https://github.com/ad-freiburg/wharfer/releases)
 
-Installing
-----------
+Setup
+-----
 
     # For a build from source
     sudo cp $GOPATH/bin/wharfer /usr/bin/
