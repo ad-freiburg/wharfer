@@ -37,6 +37,8 @@ func init() {
 	rm.InitFlags()
 }
 
+var version = "no-release"
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "COMMAND")
@@ -60,6 +62,9 @@ func main() {
 		args = logs.ParseToArgs(os.Args[2:])
 	case "ps":
 		args = ps.ParseToArgs(os.Args[2:])
+	case "--version":
+		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
+		os.Exit(0)
 	default:
 		fmt.Fprintln(os.Stderr, "Unknown subcommand", os.Args[1])
 		os.Exit(2)

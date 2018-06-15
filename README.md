@@ -46,32 +46,53 @@ there are some differences.
   forms e.g. there's only `-p` and not `--publish`
 - `-it` which in `docker` is a combination of the `-i` and `-t` options is only
   one option in `wharfer`
+- `--rm` is turned on by default for `wharfer run` so that by default
+  containers are automatically deleted after execution. For compatibility
+  `--rm` remains as a no-op, additionaly there is a `--no-rm` flag to
+  explicitly keep `wharfer` from deleting the container. As `--rm` conflicts
+  with `--restart` the latter automatically turns deletion off
+- The docker option `--init` is turned on by default for `wharfer run` so that
+  containers always execute with a minimal `init` and zombie processes are
+  reaped
 
 ### Running Containers
 
-A simple ephermal (through `--rm`) container running the `busybox` shell can be
-executed as follows
+A simple ephermal (as `--rm` is default on wharfer) container running the
+`busybox` shell can be executed as follows
 
-    wharfer run --rm -it --name wharfer_busybox busybox:latest
+    wharfer run -it --name wharfer_busybox busybox:latest
 
 ### Building Containers
 Using the busybox container from the previous section we can also build
 a custom image just like with `docker`
 
+First we create a project folder and inside it we create a script that should
+be run inside a container. Save the following text in `hello.sh`
 
-    tee hello.sh <<EOF
-     #!/bin/sh
-     echo 'Hello, World!'
-     EOF
+    #!/bin/sh
+    echo 'Hello, World!'
 
-    tee Dockerfile <<EOF
-     FROM busybox:latest
-     COPY hello.sh /app/
-     CMD ["/bin/sh", "/app/hello.sh"]
-     EOF
+Then we create a `Dockerfile` that describes how to get from a base system (in
+this example a bare `busybox` image) to our desired container
+
+    FROM busybox:latest
+    COPY hello.sh /app/
+    CMD ["/bin/sh", "/app/hello.sh"]
+
+Then the following command builds an image from the `Dockerfile` and tags it
+with the name `hellobusy`
 
     wharfer build -t hellobusy .
-    wharfer run --rm hellobusy
+
+To finally run an ephermal container that executes our `hello.sh` script as
+defined in the `CMD` line of the `Dockerfile` we execute
+
+    wharfer run hellobusy
+
+*Note*: Unlike the standard  `docker` command, `wharfer` defaults to
+automatically removing the image after `wharfer run` exits. This can be
+overwritten using the `--no-rm` flag and is also turned off automatically when
+using the conflicting `--restart`
 
 ### Supported commands
 
