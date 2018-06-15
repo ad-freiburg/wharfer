@@ -22,6 +22,20 @@ then do
 Alternatively you can download binary releases
 [here](https://github.com/ad-freiburg/wharfer/releases)
 
+Building a Release
+------------------
+To build a release version first make sure everyhting works, then edit the
+[Setup](#Setup) section of this Readme so the download link points to the
+future version. *Only after committing this final change tag the release*
+
+    git tag -a vX.Y.Z -m <message>
+
+Then build with `-ldflags` such that the version is added to the binary
+
+    go build -ldflags="-X main.version=$(git describe --always --long --dirty)"
+
+Finally use the GitHub Releases mechanism to release a new version
+
 Setup
 -----
 
