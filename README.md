@@ -44,10 +44,10 @@ Setup
     # or for the binary release
     wget https://github.com/ad-freiburg/wharfer/releases/download/v0.2.0/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
-    sudo cp wharfer_$(uname -m)/wharfer /usr/bin/wharfer
+    sudo cp wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
 
-    sudo chown root:docker /usr/bin/wharfer
-    sudo chmod g+s /usr/bin/wharfer
+    sudo chown root:docker /usr/local/bin/wharfer
+    sudo chmod g+s /usr/local/bin/wharfer
 
 Also *make sure that the executable is only writable by root*
 
