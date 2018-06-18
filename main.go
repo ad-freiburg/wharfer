@@ -41,7 +41,7 @@ var version = "no-release"
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "COMMAND")
+		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "<COMMAND>|--version")
 		fmt.Fprintln(os.Stderr, "Commands:")
 		fmt.Fprintln(os.Stderr, "\tbuild")
 		fmt.Fprintln(os.Stderr, "\trun")
