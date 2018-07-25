@@ -12,6 +12,7 @@ type Run struct {
 	Cmd            *flag.FlagSet
 	Ports          StringSliceFlag
 	Volumes        StringSliceFlag
+	Env            StringSliceFlag
 	NoRemove       bool
 	Detach         bool
 	Init           bool
@@ -24,12 +25,13 @@ func (run *Run) InitFlags() {
 	var removeDummy bool
 	run.Cmd = flag.NewFlagSet("run", flag.ExitOnError)
 	run.Cmd.Var(&run.Volumes, "v", "Volume to bind in container /host:/container format (must be absolute)")
+	run.Cmd.Var(&run.Env, "e", "Add an environment variable mapping of the form \"VARIABLE=value\"")
 	run.Cmd.Var(&run.Ports, "p", "Port to expose in hostPort:containerPort format")
 	run.Cmd.BoolVar(&removeDummy, "rm", true, "Remove container after exit (no-op on wharfer since it's the default)")
 	run.Cmd.BoolVar(&run.NoRemove, "no-rm", false, "Do not remove container after exit")
-	run.Cmd.BoolVar(&run.Init, "init", true, "Use docker-init enabling the reaping of zombie processes")
+	run.Cmd.BoolVar(&run.Init, "init", true, "Use docker-init enabling the reaping of zombie processes (default unlike in docker)")
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
-	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively (default unlike in docker)")
+	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
 	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
 }
@@ -81,6 +83,12 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 				os.Exit(3)
 			}
 			args = append(args, "-v", runVolume)
+		}
+	}
+
+	if len(run.Env) > 0 {
+		for _, runEnv := range run.Env {
+			args = append(args, "-e", runEnv)
 		}
 	}
 
