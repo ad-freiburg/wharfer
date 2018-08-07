@@ -13,6 +13,7 @@ type Run struct {
 	Ports          StringSliceFlag
 	Volumes        StringSliceFlag
 	Env            StringSliceFlag
+	EntryPoint     string
 	NoRemove       bool
 	Detach         bool
 	Init           bool
@@ -34,6 +35,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
 	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
+	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
 
 func (run *Run) ParseToArgs(rawArgs []string) []string {
@@ -46,6 +48,10 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 	if run.RestartPolicy != "" {
 		args = append(args, "--restart", run.RestartPolicy)
 		run.NoRemove = true
+	}
+
+	if run.EntryPoint != "" {
+		args = append(args, "--entrypoint", run.EntryPoint)
 	}
 
 	if run.Init {
