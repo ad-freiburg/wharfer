@@ -27,6 +27,7 @@ var ps wrap.Ps
 var kill wrap.Kill
 var rm wrap.Rm
 var logs wrap.Logs
+var pull wrap.Pull
 
 func init() {
 	build.InitFlags()
@@ -35,6 +36,7 @@ func init() {
 	kill.InitFlags()
 	logs.InitFlags()
 	rm.InitFlags()
+	pull.InitFlags()
 }
 
 var version = "no-release"
@@ -45,6 +47,11 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Commands:")
 		fmt.Fprintln(os.Stderr, "\tbuild")
 		fmt.Fprintln(os.Stderr, "\trun")
+		fmt.Fprintln(os.Stderr, "\tps")
+		fmt.Fprintln(os.Stderr, "\tkill")
+		fmt.Fprintln(os.Stderr, "\trm")
+		fmt.Fprintln(os.Stderr, "\tlogs")
+		fmt.Fprintln(os.Stderr, "\tpull")
 		os.Exit(1)
 	}
 
@@ -62,6 +69,8 @@ func main() {
 		args = logs.ParseToArgs(os.Args[2:])
 	case "ps":
 		args = ps.ParseToArgs(os.Args[2:])
+	case "pull":
+		args = pull.ParseToArgs(os.Args[2:])
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
 		os.Exit(0)
