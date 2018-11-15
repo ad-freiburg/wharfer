@@ -28,6 +28,7 @@ var kill wrap.Kill
 var rm wrap.Rm
 var logs wrap.Logs
 var pull wrap.Pull
+var images wrap.Images
 
 func init() {
 	build.InitFlags()
@@ -37,6 +38,7 @@ func init() {
 	logs.InitFlags()
 	rm.InitFlags()
 	pull.InitFlags()
+	images.InitFlags()
 }
 
 var version = "no-release"
@@ -52,6 +54,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "\trm")
 		fmt.Fprintln(os.Stderr, "\tlogs")
 		fmt.Fprintln(os.Stderr, "\tpull")
+		fmt.Fprintln(os.Stderr, "\timages")
 		os.Exit(1)
 	}
 
@@ -71,6 +74,8 @@ func main() {
 		args = ps.ParseToArgs(os.Args[2:])
 	case "pull":
 		args = pull.ParseToArgs(os.Args[2:])
+	case "images":
+		args = images.ParseToArgs(os.Args[2:])
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
 		os.Exit(0)

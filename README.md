@@ -117,6 +117,9 @@ The following `docker` commands are currently supported in some form
 - `docker logs` ⇒ `wharfer logs`
 - `docker ps` ⇒ `wharfer ps`
 - `docker kill` ⇒ `wharfer kill`
+- `docker rm` ⇒ `wharfer rm`
+- `docker pull` ⇒ `wharfer pull`
+- `docker images` ⇒ `wharfer images`
 
 To see the supported flags run `wharfer COMMAND --help`
 
