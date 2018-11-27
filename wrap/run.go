@@ -3,7 +3,9 @@ package wrap
 import (
 	"flag"
 	"fmt"
+	"github.com/docker/docker/pkg/namesgenerator"
 	"os"
+	"os/user"
 	"regexp"
 	"strings"
 )
@@ -41,9 +43,16 @@ func (run *Run) InitFlags() {
 func (run *Run) ParseToArgs(rawArgs []string) []string {
 	run.Cmd.Parse(rawArgs)
 	args := []string{"run"}
-	if run.Name != "" {
-		args = append(args, "--name", run.Name)
+	user, err := user.Current()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Failed to retrieve username")
+		os.Exit(3)
 	}
+	name := namesgenerator.GetRandomName(0)
+	if run.Name != "" {
+		name = run.Name
+	}
+	args = append(args, "--name", user.Username+"_"+name)
 
 	if run.RestartPolicy != "" {
 		args = append(args, "--restart", run.RestartPolicy)

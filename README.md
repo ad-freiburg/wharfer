@@ -108,6 +108,14 @@ automatically removing the image after `wharfer run` exits. This can be
 overwritten using the `--no-rm` flag and is also turned off automatically when
 using the conflicting `--restart`
 
+As another `wharfer` specific change when using `wharfer run … --name custom`
+the username of the current user is prepended to the actual container name.
+When omitting `--name` a random name is generated just like with `docker` but is
+also prepended with the username. Note that for `wharfer kill` one now needs to
+give the name including the prepended username. Alternatively one can still kill
+using the id.
+This makes distinguishing containers easier in a multi user context.
+
 ### Supported commands
 
 The following `docker` commands are currently supported in some form
