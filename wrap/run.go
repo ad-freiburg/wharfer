@@ -3,11 +3,12 @@ package wrap
 import (
 	"flag"
 	"fmt"
-	"github.com/docker/docker/pkg/namesgenerator"
 	"os"
 	"os/user"
 	"regexp"
 	"strings"
+
+	"github.com/docker/docker/pkg/namesgenerator"
 )
 
 type Run struct {
