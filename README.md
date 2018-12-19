@@ -40,14 +40,18 @@ Setup
 -----
 
     # For a build from source
-    sudo cp $GOPATH/bin/wharfer /usr/local/bin/
+    sudo mv $GOPATH/bin/wharfer /usr/local/bin/
     # or for the binary release
+    cd /tmp
+    rm wharfer_$(uname -m).tar.bz2
     wget https://github.com/ad-freiburg/wharfer/releases/download/v0.3.1/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
-    sudo cp wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
+    sudo mv wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
 
     sudo chown root:docker /usr/local/bin/wharfer
     sudo chmod g+s /usr/local/bin/wharfer
+    wharfer ps
+    wharfer --version
 
 Also *make sure that the executable is only writable by root*
 
