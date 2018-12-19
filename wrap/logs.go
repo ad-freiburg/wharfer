@@ -2,16 +2,19 @@ package wrap
 
 import (
 	"flag"
+	"strconv"
 )
 
 type Logs struct {
 	Cmd    *flag.FlagSet
 	Follow bool
+	Tail   int
 }
 
 func (logs *Logs) InitFlags() {
 	logs.Cmd = flag.NewFlagSet("logs", flag.ExitOnError)
 	logs.Cmd.BoolVar(&logs.Follow, "f", false, "Follow output")
+	logs.Cmd.IntVar(&logs.Tail, "tail", 0, "Only show last <num> lines")
 }
 
 func (logs *Logs) ParseToArgs(rawArgs []string) []string {
@@ -19,6 +22,10 @@ func (logs *Logs) ParseToArgs(rawArgs []string) []string {
 	args := []string{"logs"}
 	if logs.Follow {
 		args = append(args, "-f")
+	}
+
+	if logs.Tail > 0 {
+		args = append(args, "--tail", strconv.Itoa(logs.Tail))
 	}
 
 	if logs.Cmd.NArg() > 0 {
