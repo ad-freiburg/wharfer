@@ -42,7 +42,7 @@ Setup
     # For a build from source
     sudo cp $GOPATH/bin/wharfer /usr/local/bin/
     # or for the binary release
-    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.3.0/wharfer_$(uname -m).tar.bz2
+    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.3.1/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
     sudo cp wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
 
