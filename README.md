@@ -132,6 +132,7 @@ The following `docker` commands are currently supported in some form
 - `docker rm` ⇒ `wharfer rm`
 - `docker pull` ⇒ `wharfer pull`
 - `docker images` ⇒ `wharfer images`
+- `docker network` ⇒ `wharfer network`
 
 To see the supported flags run `wharfer COMMAND --help`
 

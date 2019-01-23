@@ -32,7 +32,12 @@ func (logs *Logs) ParseToArgs(rawArgs []string) []string {
 		// add -- to make sure additional arguments are not interpreted as
 		// potentially harmful flags. Here this is the container to logs
 		args = append(args, "--")
-		args = append(args, logs.Cmd.Args()...)
+		for _, arg := range logs.Cmd.Args() {
+			if !IsHexOnly(arg) {
+				arg = PrependUsername(arg)
+			}
+			args = append(args, arg)
+		}
 	}
 	return args
 }

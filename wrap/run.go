@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/user"
 	"regexp"
 	"strings"
 
@@ -22,6 +21,8 @@ type Run struct {
 	Init           bool
 	InteractiveTTY bool
 	Name           string
+	Network        string
+	NetworkAlias   StringSliceFlag
 	RestartPolicy  string
 }
 
@@ -37,6 +38,8 @@ func (run *Run) InitFlags() {
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
+	run.Cmd.StringVar(&run.Network, "network", "", "Connect a container to a network")
+	run.Cmd.Var(&run.NetworkAlias, "network-alias", "Add network-scoped alias for the container")
 	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
 	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
@@ -44,20 +47,25 @@ func (run *Run) InitFlags() {
 func (run *Run) ParseToArgs(rawArgs []string) []string {
 	run.Cmd.Parse(rawArgs)
 	args := []string{"run"}
-	user, err := user.Current()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Failed to retrieve username")
-		os.Exit(3)
-	}
 	name := namesgenerator.GetRandomName(0)
 	if run.Name != "" {
 		name = run.Name
 	}
-	args = append(args, "--name", user.Username+"_"+name)
+	args = append(args, "--name", PrependUsername(name))
 
 	if run.RestartPolicy != "" {
 		args = append(args, "--restart", run.RestartPolicy)
 		run.NoRemove = true
+	}
+
+	if run.Network != "" {
+		args = append(args, "--network", PrependUsername(run.Network))
+	}
+
+	if len(run.NetworkAlias) > 0 {
+		for _, alias := range run.NetworkAlias {
+			args = append(args, "--network-alias", alias)
+		}
 	}
 
 	if run.EntryPoint != "" {
@@ -110,7 +118,7 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 
 	if run.Cmd.NArg() > 0 {
 		// add -- to make sure additional arguments are not interpreted as
-		// potentially harmful flags. Here this is the container name
+		// potentially harmful flags. Here these are args for the entrypoint.
 		args = append(args, "--")
 		args = append(args, run.Cmd.Args()...)
 	}
