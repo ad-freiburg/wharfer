@@ -21,6 +21,7 @@ type Run struct {
 	Init           bool
 	InteractiveTTY bool
 	Name           string
+	Network        string
 	RestartPolicy  string
 }
 
@@ -36,6 +37,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.BoolVar(&run.Detach, "d", false, "Detach container after starting it. Disables interactive mode")
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
+	run.Cmd.StringVar(&run.Network, "network", "", "Connect a container to a network")
 	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
 	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
@@ -52,6 +54,10 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 	if run.RestartPolicy != "" {
 		args = append(args, "--restart", run.RestartPolicy)
 		run.NoRemove = true
+	}
+
+	if run.Network != "" {
+		args = append(args, "--network", PrependUsername(run.Network))
 	}
 
 	if run.EntryPoint != "" {
