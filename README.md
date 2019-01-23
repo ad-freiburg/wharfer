@@ -20,7 +20,8 @@ then do
     go get github.com/ad-freiburg/wharfer
 
 Alternatively you can download binary releases
-[here](https://github.com/ad-freiburg/wharfer/releases)
+[here](https://github.com/ad-freiburg/wharfer/releases) or even simpler, follow
+the [Setup](#Setup) section with detailed commands.
 
 Building a Release
 ------------------
@@ -44,7 +45,7 @@ Setup
     # or for the binary release
     cd /tmp
     rm wharfer_$(uname -m).tar.bz2
-    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.3.1/wharfer_$(uname -m).tar.bz2
+    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.4.0/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
     sudo mv wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
 
