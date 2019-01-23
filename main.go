@@ -95,6 +95,12 @@ func main() {
 				args = networkList.ParseToArgs(os.Args[3:])
 			case "rm":
 				args = networkRemove.ParseToArgs(os.Args[3:])
+			case "--help":
+				fmt.Fprintln(os.Stderr, "Commands:")
+				fmt.Fprintln(os.Stderr, "\tcreate")
+				fmt.Fprintln(os.Stderr, "\tls")
+				fmt.Fprintln(os.Stderr, "\trm")
+				os.Exit(1)
 			default:
 				fmt.Fprintln(os.Stderr, "Unknown subcommand", os.Args[2])
 				os.Exit(1)
