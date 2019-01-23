@@ -29,6 +29,8 @@ var rm wrap.Rm
 var logs wrap.Logs
 var pull wrap.Pull
 var images wrap.Images
+var networkCreate wrap.NetworkCreate
+var networkRemove wrap.NetworkRemove
 
 func init() {
 	build.InitFlags()
@@ -39,6 +41,8 @@ func init() {
 	rm.InitFlags()
 	pull.InitFlags()
 	images.InitFlags()
+	networkCreate.InitFlags()
+	networkRemove.InitFlags()
 }
 
 var version = "no-release"
@@ -76,6 +80,13 @@ func main() {
 		args = pull.ParseToArgs(os.Args[2:])
 	case "images":
 		args = images.ParseToArgs(os.Args[2:])
+	case "network":
+		switch os.Args[2] {
+		case "create":
+			args = networkCreate.ParseToArgs(os.Args[3:])
+		case "rm":
+			args = networkRemove.ParseToArgs(os.Args[3:])
+		}
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
 		os.Exit(0)
