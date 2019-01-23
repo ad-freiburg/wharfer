@@ -22,6 +22,7 @@ type Run struct {
 	InteractiveTTY bool
 	Name           string
 	Network        string
+	NetworkAlias   StringSliceFlag
 	RestartPolicy  string
 }
 
@@ -38,6 +39,7 @@ func (run *Run) InitFlags() {
 	run.Cmd.BoolVar(&run.InteractiveTTY, "it", false, "Run container interactively")
 	run.Cmd.StringVar(&run.Name, "name", "", "Name of the running container instance")
 	run.Cmd.StringVar(&run.Network, "network", "", "Connect a container to a network")
+	run.Cmd.Var(&run.NetworkAlias, "network-alias", "Add network-scoped alias for the container")
 	run.Cmd.StringVar(&run.RestartPolicy, "restart", "", "Restart policy e.g. 'unless-stopped'")
 	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
@@ -58,6 +60,12 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 
 	if run.Network != "" {
 		args = append(args, "--network", PrependUsername(run.Network))
+	}
+
+	if len(run.NetworkAlias) > 0 {
+		for _, alias := range run.NetworkAlias {
+			args = append(args, "--network-alias", alias)
+		}
 	}
 
 	if run.EntryPoint != "" {

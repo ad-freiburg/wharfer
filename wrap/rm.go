@@ -26,7 +26,7 @@ func (rm *Rm) ParseToArgs(rawArgs []string) []string {
 		// add -- to make sure additional arguments are not interpreted as
 		// potentially harmful flags. Here this is the container to rm
 		args = append(args, "--")
-		for _, arg := range kill.Cmd.Args() {
+		for _, arg := range rm.Cmd.Args() {
 			if !IsHexOnly(arg) {
 				arg = PrependUsername(arg)
 			}
