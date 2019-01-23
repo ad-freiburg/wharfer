@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/user"
 	"regexp"
 	"strings"
 
@@ -44,16 +43,11 @@ func (run *Run) InitFlags() {
 func (run *Run) ParseToArgs(rawArgs []string) []string {
 	run.Cmd.Parse(rawArgs)
 	args := []string{"run"}
-	user, err := user.Current()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Failed to retrieve username")
-		os.Exit(3)
-	}
 	name := namesgenerator.GetRandomName(0)
 	if run.Name != "" {
 		name = run.Name
 	}
-	args = append(args, "--name", user.Username+"_"+name)
+	args = append(args, "--name", PrependUsername(name))
 
 	if run.RestartPolicy != "" {
 		args = append(args, "--restart", run.RestartPolicy)
