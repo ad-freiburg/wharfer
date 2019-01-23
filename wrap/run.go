@@ -104,7 +104,7 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 
 	if run.Cmd.NArg() > 0 {
 		// add -- to make sure additional arguments are not interpreted as
-		// potentially harmful flags. Here this is the container name
+		// potentially harmful flags. Here these are args for the entrypoint.
 		args = append(args, "--")
 		args = append(args, run.Cmd.Args()...)
 	}
