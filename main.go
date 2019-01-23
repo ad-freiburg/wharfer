@@ -30,6 +30,7 @@ var logs wrap.Logs
 var pull wrap.Pull
 var images wrap.Images
 var networkCreate wrap.NetworkCreate
+var networkList wrap.NetworkList
 var networkRemove wrap.NetworkRemove
 
 func init() {
@@ -42,6 +43,7 @@ func init() {
 	pull.InitFlags()
 	images.InitFlags()
 	networkCreate.InitFlags()
+	networkList.InitFlags()
 	networkRemove.InitFlags()
 }
 
@@ -59,6 +61,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "\tlogs")
 		fmt.Fprintln(os.Stderr, "\tpull")
 		fmt.Fprintln(os.Stderr, "\timages")
+		fmt.Fprintln(os.Stderr, "\tnetwork")
 		os.Exit(1)
 	}
 
@@ -81,11 +84,21 @@ func main() {
 	case "images":
 		args = images.ParseToArgs(os.Args[2:])
 	case "network":
-		switch os.Args[2] {
-		case "create":
-			args = networkCreate.ParseToArgs(os.Args[3:])
-		case "rm":
-			args = networkRemove.ParseToArgs(os.Args[3:])
+		if len(os.Args) < 3 {
+			fmt.Fprintln(os.Stderr, "Missing subcommand")
+			os.Exit(1)
+		} else {
+			switch os.Args[2] {
+			case "create":
+				args = networkCreate.ParseToArgs(os.Args[3:])
+			case "ls":
+				args = networkList.ParseToArgs(os.Args[3:])
+			case "rm":
+				args = networkRemove.ParseToArgs(os.Args[3:])
+			default:
+				fmt.Fprintln(os.Stderr, "Unknown subcommand", os.Args[2])
+				os.Exit(1)
+			}
 		}
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
