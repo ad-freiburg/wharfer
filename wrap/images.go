@@ -20,5 +20,12 @@ func (images *Images) ParseToArgs(rawArgs []string) []string {
 	if images.Format != "" {
 		args = append(args, "--format", images.Format)
 	}
+
+	if images.Cmd.NArg() > 0 {
+		// add -- to make sure additional arguments are not interpreted as
+		// potentially harmful flags. Here this is the name of an image.
+		args = append(args, "--")
+		args = append(args, images.Cmd.Args()...)
+	}
 	return args
 }
