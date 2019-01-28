@@ -10,6 +10,7 @@ type Build struct {
 	NoCache   bool
 	BuildArgs StringSliceFlag
 	File      string
+	Pull      bool
 }
 
 func (build *Build) InitFlags() {
@@ -22,6 +23,7 @@ func (build *Build) InitFlags() {
 	build.Cmd.StringVar(&build.File, "f", "", fileUsage+" (shorthand)")
 	build.Cmd.Var(&build.BuildArgs, "build-arg", "Set build-time variables")
 	build.Cmd.BoolVar(&build.NoCache, "no-cache", false, "Disable caching to rebuild from scratch")
+	build.Cmd.BoolVar(&build.NoCache, "pull", false, "Always attempt to pull a newer version of the image")
 }
 
 func (build *Build) ParseToArgs(rawArgs []string) []string {
@@ -37,6 +39,10 @@ func (build *Build) ParseToArgs(rawArgs []string) []string {
 
 	if build.NoCache {
 		args = append(args, "--no-cache")
+	}
+
+	if build.Pull {
+		args = append(args, "--pull")
 	}
 
 	if len(build.BuildArgs) > 0 {
