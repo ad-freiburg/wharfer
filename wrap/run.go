@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/user"
 	"regexp"
 	"strings"
 
@@ -44,6 +45,17 @@ func (run *Run) InitFlags() {
 	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
 
+func appendCurrentUserArgs(args []string) []string {
+	user, err := user.Current()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Failed to retrieve user data")
+		os.Exit(3)
+	}
+
+	args = append(args, "--user", fmt.Sprintf("%s:%s", user.Uid, user.Gid))
+	return args
+}
+
 func (run *Run) ParseToArgs(rawArgs []string) []string {
 	run.Cmd.Parse(rawArgs)
 	args := []string{"run"}
@@ -51,6 +63,9 @@ func (run *Run) ParseToArgs(rawArgs []string) []string {
 	if run.Name != "" {
 		name = run.Name
 	}
+	// Always set --user $(id -u):$(id -g) so that when running without user
+	// namespaces we at least execute as the current user
+	args = appendCurrentUserArgs(args)
 	args = append(args, "--name", PrependUsername(name))
 
 	if run.RestartPolicy != "" {
