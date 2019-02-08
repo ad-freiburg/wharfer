@@ -32,6 +32,7 @@ var images wrap.Images
 var networkCreate wrap.NetworkCreate
 var networkList wrap.NetworkList
 var networkRemove wrap.NetworkRemove
+var attach wrap.Attach
 
 func init() {
 	build.InitFlags()
@@ -45,6 +46,7 @@ func init() {
 	networkCreate.InitFlags()
 	networkList.InitFlags()
 	networkRemove.InitFlags()
+	attach.InitFlags()
 }
 
 var version = "no-release"
@@ -62,6 +64,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "\tpull")
 		fmt.Fprintln(os.Stderr, "\timages")
 		fmt.Fprintln(os.Stderr, "\tnetwork")
+		fmt.Fprintln(os.Stderr, "\tattach")
 		os.Exit(1)
 	}
 
@@ -106,6 +109,8 @@ func main() {
 				os.Exit(1)
 			}
 		}
+	case "attach":
+		args = attach.ParseToArgs(os.Args[2:])
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
 		os.Exit(0)
