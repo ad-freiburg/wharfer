@@ -154,12 +154,12 @@ For example in our default configuration `root` inside the container is mapped
 to `nobody` outside the container. Thus if you want to write to a host
 directory you need to make it writeable for `nobody`. Since a non-root user
 can't change ownership of a directory the easiest way to make a local directory
-writeable for `nobody` is to use `chown o+w hostdir.
+writeable for `nobody` is to use `chmod o=rwx hostdir`.
 
 An example using the busybox container goes as follows
 
     mkdir writetest
-    chmod o+w writetest
+    chmod o=rwx writetest
     wharfer run --rm -it --name wharfer_busybox -v $(pwd)/writetest:/writetest busybox:latest
     # and then inside the container
     / # echo 'Hello, World!' > /writestest/hello.txt
@@ -167,4 +167,14 @@ An example using the busybox container goes as follows
     # and check the result on the host, the file hello.txt should be owned by
     # nobody
     ls -la writetest
-    cat writetest/hello.txt
+
+If you're adding data from outside the container you need to make sure it's
+readable (and writeable if written to from the container) by the `nobody` user.
+In case of directories they should also be "executable" so they can be listed.
+The following commands may be useful for this
+
+    # Set all filles in the hostdir to be readable and writeable
+    # by the nobody user
+    chmod -R o+rw hostdir
+    # Set all directories to be readable, writable and listable
+    find hostdir -type d -exec chmod o+rwx {} \;
