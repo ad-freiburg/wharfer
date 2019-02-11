@@ -1,7 +1,6 @@
 package wrap
 
 import (
-	"encoding/hex"
 	"fmt"
 	"os"
 	"os/user"
@@ -38,6 +37,10 @@ func PrependUsername(s string) string {
 }
 
 func IsHexOnly(s string) bool {
-	_, err := hex.DecodeString(s)
-	return err == nil
+	for _, c := range s {
+		if (c < '0' || c > '9') && (c < 'a' || c > 'f') {
+			return false
+		}
+	}
+	return true
 }
