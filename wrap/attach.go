@@ -21,7 +21,7 @@ func (c *Attach) ParseToArgs(rawArgs []string) []string {
 		// potentially harmful flags. Here this is the container to rm
 		args = append(args, "--")
 		for _, arg := range c.Cmd.Args() {
-			// Only allow attaching to named containers.
+			// If the container is given by name we prepend the user name
 			if !IsHexOnly(arg) {
 				arg = PrependUsername(arg)
 				args = append(args, arg)
