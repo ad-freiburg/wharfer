@@ -42,8 +42,7 @@ func (exec *Exec) ParseToArgs(rawArgs []string) []string {
 		}
 	}
 
-	argsLeft := exec.Cmd.NArg()
-	if argsLeft < 2 {
+	if exec.Cmd.NArg() < 2 {
 		fmt.Fprintln(os.Stderr, "Missing [CONTAINER] and/or [CMD] arguments")
 		os.Exit(3)
 	}
@@ -53,7 +52,7 @@ func (exec *Exec) ParseToArgs(rawArgs []string) []string {
 
 	// The [CONTAINER] positional argument
 	container := exec.Cmd.Args()[0]
-	argsLeft--
+	// If the container is given by name we prepend the user name
 	if !IsHexOnly(container) {
 		container = PrependUsername(container)
 	}
@@ -62,7 +61,6 @@ func (exec *Exec) ParseToArgs(rawArgs []string) []string {
 	// [COMMAND] argument
 	command := exec.Cmd.Args()[1]
 	args = append(args, command)
-	argsLeft--
 
 	// optional arguments
 	args = append(args, exec.Cmd.Args()[2:]...)

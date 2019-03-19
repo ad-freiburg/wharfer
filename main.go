@@ -21,34 +21,34 @@ func execDocker(args ...string) {
 	}
 }
 
-var build wrap.Build
-var run wrap.Run
-var ps wrap.Ps
-var kill wrap.Kill
-var rm wrap.Rm
-var logs wrap.Logs
-var pull wrap.Pull
-var images wrap.Images
-var networkCreate wrap.NetworkCreate
-var networkList wrap.NetworkList
-var networkRemove wrap.NetworkRemove
-var attach wrap.Attach
-var execcmd wrap.Exec
+var buildCmd wrap.Build
+var runCmd wrap.Run
+var psCmd wrap.Ps
+var killCmd wrap.Kill
+var rmCmd wrap.Rm
+var logsCmd wrap.Logs
+var pullCmd wrap.Pull
+var imagesCmd wrap.Images
+var networkCreateCmd wrap.NetworkCreate
+var networkListCmd wrap.NetworkList
+var networkRemoveCmd wrap.NetworkRemove
+var attachCmd wrap.Attach
+var execCmd wrap.Exec
 
 func init() {
-	build.InitFlags()
-	run.InitFlags()
-	ps.InitFlags()
-	kill.InitFlags()
-	logs.InitFlags()
-	rm.InitFlags()
-	pull.InitFlags()
-	images.InitFlags()
-	networkCreate.InitFlags()
-	networkList.InitFlags()
-	networkRemove.InitFlags()
-	attach.InitFlags()
-	execcmd.InitFlags()
+	buildCmd.InitFlags()
+	runCmd.InitFlags()
+	psCmd.InitFlags()
+	killCmd.InitFlags()
+	logsCmd.InitFlags()
+	rmCmd.InitFlags()
+	pullCmd.InitFlags()
+	imagesCmd.InitFlags()
+	networkCreateCmd.InitFlags()
+	networkListCmd.InitFlags()
+	networkRemoveCmd.InitFlags()
+	attachCmd.InitFlags()
+	execCmd.InitFlags()
 }
 
 var version = "no-release"
@@ -74,21 +74,21 @@ func main() {
 	var args []string
 	switch os.Args[1] {
 	case "build":
-		args = build.ParseToArgs(os.Args[2:])
+		args = buildCmd.ParseToArgs(os.Args[2:])
 	case "run":
-		args = run.ParseToArgs(os.Args[2:])
+		args = runCmd.ParseToArgs(os.Args[2:])
 	case "kill":
-		args = kill.ParseToArgs(os.Args[2:])
+		args = killCmd.ParseToArgs(os.Args[2:])
 	case "rm":
-		args = rm.ParseToArgs(os.Args[2:])
+		args = rmCmd.ParseToArgs(os.Args[2:])
 	case "logs":
-		args = logs.ParseToArgs(os.Args[2:])
+		args = logsCmd.ParseToArgs(os.Args[2:])
 	case "ps":
-		args = ps.ParseToArgs(os.Args[2:])
+		args = psCmd.ParseToArgs(os.Args[2:])
 	case "pull":
-		args = pull.ParseToArgs(os.Args[2:])
+		args = pullCmd.ParseToArgs(os.Args[2:])
 	case "images":
-		args = images.ParseToArgs(os.Args[2:])
+		args = imagesCmd.ParseToArgs(os.Args[2:])
 	case "network":
 		if len(os.Args) < 3 {
 			fmt.Fprintln(os.Stderr, "Missing subcommand")
@@ -96,11 +96,11 @@ func main() {
 		} else {
 			switch os.Args[2] {
 			case "create":
-				args = networkCreate.ParseToArgs(os.Args[3:])
+				args = networkCreateCmd.ParseToArgs(os.Args[3:])
 			case "ls":
-				args = networkList.ParseToArgs(os.Args[3:])
+				args = networkListCmd.ParseToArgs(os.Args[3:])
 			case "rm":
-				args = networkRemove.ParseToArgs(os.Args[3:])
+				args = networkRemoveCmd.ParseToArgs(os.Args[3:])
 			case "--help":
 				fmt.Fprintln(os.Stderr, "Commands:")
 				fmt.Fprintln(os.Stderr, "\tcreate")
@@ -113,9 +113,9 @@ func main() {
 			}
 		}
 	case "attach":
-		args = attach.ParseToArgs(os.Args[2:])
+		args = attachCmd.ParseToArgs(os.Args[2:])
 	case "exec":
-		args = execcmd.ParseToArgs(os.Args[2:])
+		args = execCmd.ParseToArgs(os.Args[2:])
 	case "--version":
 		fmt.Fprintln(os.Stderr, os.Args[0], "version", version)
 		os.Exit(0)
