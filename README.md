@@ -123,19 +123,8 @@ This makes distinguishing containers easier in a multi user context.
 
 ### Supported commands
 
-The following `docker` commands are currently supported in some form
-
-- `docker run` ⇒ `wharfer run`
-- `docker build` ⇒ `wharfer build`
-- `docker logs` ⇒ `wharfer logs`
-- `docker ps` ⇒ `wharfer ps`
-- `docker kill` ⇒ `wharfer kill`
-- `docker rm` ⇒ `wharfer rm`
-- `docker pull` ⇒ `wharfer pull`
-- `docker images` ⇒ `wharfer images`
-- `docker network` ⇒ `wharfer network`
-
-To see the supported flags run `wharfer COMMAND --help`
+All `docker` commands supported by `wharfer` can be listed by executing
+`wharfer` without additional flags.
 
 A note on Volumes
 -----------------
