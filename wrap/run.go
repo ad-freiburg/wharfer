@@ -1,9 +1,11 @@
 package wrap
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"os/user"
 	"regexp"
 	"strings"
@@ -45,7 +47,30 @@ func (run *Run) InitFlags() {
 	run.Cmd.StringVar(&run.EntryPoint, "entrypoint", "", "Override the default ENTRYPOINT")
 }
 
+// Checks if docker runs with user namespacing activated
+func isUserNamespaced() bool {
+	infoCmd := exec.Command("docker", "info")
+	var output bytes.Buffer
+	infoCmd.Stdout = &output
+	err := infoCmd.Run()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Failed to execute 'docker info'")
+		os.Exit(4)
+	}
+	return bytes.Index(output.Bytes(), []byte("userns")) != -1
+}
+
+// Appends the equivalent of -u $(id -u):$(id -g) to args if user namespacing is
+// not in effect
 func appendCurrentUserArgs(args []string) []string {
+	// First we need to check if usernamespaces are activated as this makes the
+	// forced -u parameter unnecessary and complicates things with a wrong user in
+	// the container
+	if isUserNamespaced() {
+		return args
+	}
+	fmt.Fprintln(os.Stderr, "No user namespacing activated forcing --user $(id -u):$(id -g)")
+
 	user, err := user.Current()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Failed to retrieve user data")
