@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type NetworkRemove struct {
@@ -13,7 +14,10 @@ func (c *NetworkRemove) InitFlags() {
 }
 
 func (c *NetworkRemove) ParseToArgs(rawArgs []string) []string {
-	c.Cmd.Parse(rawArgs)
+	if err := c.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"network", "rm"}
 	if c.Cmd.NArg() > 0 {
 		// add -- to make sure additional arguments are not interpreted as

@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Images struct {
@@ -15,7 +16,10 @@ func (images *Images) InitFlags() {
 }
 
 func (images *Images) ParseToArgs(rawArgs []string) []string {
-	images.Cmd.Parse(rawArgs)
+	if err := images.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"images"}
 	if images.Format != "" {
 		args = append(args, "--format", images.Format)

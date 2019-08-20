@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Build struct {
@@ -27,7 +28,10 @@ func (build *Build) InitFlags() {
 }
 
 func (build *Build) ParseToArgs(rawArgs []string) []string {
-	build.Cmd.Parse(rawArgs)
+	if err := build.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"build"}
 	if build.File != "" {
 		args = append(args, "--file", build.File)

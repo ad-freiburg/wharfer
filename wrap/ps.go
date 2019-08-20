@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Ps struct {
@@ -23,7 +24,10 @@ func (ps *Ps) InitFlags() {
 }
 
 func (ps *Ps) ParseToArgs(rawArgs []string) []string {
-	ps.Cmd.Parse(rawArgs)
+	if err := ps.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"ps"}
 	if ps.All {
 		args = append(args, "-a")

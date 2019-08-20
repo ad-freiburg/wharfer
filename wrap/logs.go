@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 	"strconv"
 )
 
@@ -18,7 +19,10 @@ func (logs *Logs) InitFlags() {
 }
 
 func (logs *Logs) ParseToArgs(rawArgs []string) []string {
-	logs.Cmd.Parse(rawArgs)
+	if err := logs.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"logs"}
 	if logs.Follow {
 		args = append(args, "-f")

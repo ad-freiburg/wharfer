@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Pull struct {
@@ -13,7 +14,10 @@ func (pull *Pull) InitFlags() {
 }
 
 func (pull *Pull) ParseToArgs(rawArgs []string) []string {
-	pull.Cmd.Parse(rawArgs)
+	if err := pull.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"pull"}
 
 	if pull.Cmd.NArg() > 0 {

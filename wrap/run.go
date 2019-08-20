@@ -82,7 +82,10 @@ func appendCurrentUserArgs(args []string) []string {
 }
 
 func (run *Run) ParseToArgs(rawArgs []string) []string {
-	run.Cmd.Parse(rawArgs)
+	if err := run.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"run"}
 	name := namesgenerator.GetRandomName(0)
 	if run.Name != "" {
