@@ -57,7 +57,7 @@ func isUserNamespaced() bool {
 		fmt.Fprintln(os.Stderr, "Failed to execute 'docker info'")
 		os.Exit(4)
 	}
-	return bytes.Index(output.Bytes(), []byte("userns")) != -1
+	return bytes.Contains(output.Bytes(), []byte("userns"))
 }
 
 // Appends the equivalent of -u $(id -u):$(id -g) to args if user namespacing is
