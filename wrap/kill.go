@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Kill struct {
@@ -13,7 +14,10 @@ func (kill *Kill) InitFlags() {
 }
 
 func (kill *Kill) ParseToArgs(rawArgs []string) []string {
-	kill.Cmd.Parse(rawArgs)
+	if err := kill.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"kill"}
 	if kill.Cmd.NArg() > 0 {
 		// add -- to make sure additional arguments are not interpreted as

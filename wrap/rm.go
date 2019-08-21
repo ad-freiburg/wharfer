@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type Rm struct {
@@ -15,7 +16,10 @@ func (rm *Rm) InitFlags() {
 }
 
 func (rm *Rm) ParseToArgs(rawArgs []string) []string {
-	rm.Cmd.Parse(rawArgs)
+	if err := rm.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"rm"}
 
 	if rm.Force {

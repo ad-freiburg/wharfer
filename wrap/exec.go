@@ -21,7 +21,10 @@ func (exec *Exec) InitFlags() {
 }
 
 func (exec *Exec) ParseToArgs(rawArgs []string) []string {
-	exec.Cmd.Parse(rawArgs)
+	if err := exec.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"exec"}
 
 	// Always set --user $(id -u):$(id -g) so that when running without user

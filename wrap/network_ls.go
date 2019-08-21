@@ -2,6 +2,7 @@ package wrap
 
 import (
 	"flag"
+	"os"
 )
 
 type NetworkList struct {
@@ -13,7 +14,10 @@ func (c *NetworkList) InitFlags() {
 }
 
 func (c *NetworkList) ParseToArgs(rawArgs []string) []string {
-	c.Cmd.Parse(rawArgs)
+	if err := c.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"network", "ls"}
 	return args
 }

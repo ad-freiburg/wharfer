@@ -15,7 +15,10 @@ func (attach *Attach) InitFlags() {
 }
 
 func (attach *Attach) ParseToArgs(rawArgs []string) []string {
-	attach.Cmd.Parse(rawArgs)
+	if err := attach.Cmd.Parse(rawArgs); err != nil {
+		// Only returns an error if the Usage was shown
+		os.Exit(0)
+	}
 	args := []string{"attach"}
 
 	if attach.Cmd.NArg() < 1 {
