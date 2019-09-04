@@ -2,6 +2,12 @@ Wharfer
 =======
 **WARNING THIS IS VERY EXPERIMENTAL WITH NO CLAIM OF ACTUAL SECURITY**
 
+[![GoDoc](https://godoc.org/github.com/ad-freiburg/wharfer?status.svg)](https://godoc.org/github.com/ad-freiburg/wharfer)
+[![Licence](https://img.shields.io/github/license/ad-freiburg/wharfer)](./LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ad-freiburg/wharfer)](https://goreportcard.com/report/github.com/ad-freiburg/wharfer)
+[![Release](https://img.shields.io/github/v/release/ad-freiburg/wharfer?include_prereleases)](https://github.com/ad-freiburg/wharfer/releases)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/wharfer.svg)](https://aur.archlinux.org/packages/wharfer)
+
 `wharfer` (pronounced /wɔɹfɚ/ from wharf ≈ pier ≈ dock) is a wrapper around the
 `docker` command that only allows some basic commands and flags with the goal
 of enabling `docker` usage by students on shared Linux machines. In the future
@@ -22,6 +28,10 @@ then do
 Alternatively you can download binary releases
 [here](https://github.com/ad-freiburg/wharfer/releases) or even simpler, follow
 the [Setup](#Setup) section with detailed commands.
+
+`wharfer` is available in the [AUR](https://aur.archlinux.org/) as
+[wharfer](https://aur.archlinux.org/packages/wharfer) and
+[wharfer-git](https://aur.archlinux.org/packages/wharfer-git).
 
 Building a Release
 ------------------
