@@ -26,6 +26,8 @@ var runCmd wrap.Run
 var psCmd wrap.Ps
 var killCmd wrap.Kill
 var rmCmd wrap.Rm
+var loadCmd wrap.Load
+var saveCmd wrap.Save
 var logsCmd wrap.Logs
 var pullCmd wrap.Pull
 var imagesCmd wrap.Images
@@ -40,6 +42,8 @@ func init() {
 	runCmd.InitFlags()
 	psCmd.InitFlags()
 	killCmd.InitFlags()
+	loadCmd.InitFlags()
+	saveCmd.InitFlags()
 	logsCmd.InitFlags()
 	rmCmd.InitFlags()
 	pullCmd.InitFlags()
@@ -62,6 +66,8 @@ func main() {
 		fmt.Fprintln(os.Stderr, "\tps")
 		fmt.Fprintln(os.Stderr, "\tkill")
 		fmt.Fprintln(os.Stderr, "\trm")
+		fmt.Fprintln(os.Stderr, "\tload")
+		fmt.Fprintln(os.Stderr, "\tsave")
 		fmt.Fprintln(os.Stderr, "\tlogs")
 		fmt.Fprintln(os.Stderr, "\tpull")
 		fmt.Fprintln(os.Stderr, "\timages")
@@ -81,6 +87,10 @@ func main() {
 		args = killCmd.ParseToArgs(os.Args[2:])
 	case "rm":
 		args = rmCmd.ParseToArgs(os.Args[2:])
+	case "save":
+		args = saveCmd.ParseToArgs(os.Args[2:])
+	case "load":
+		args = loadCmd.ParseToArgs(os.Args[2:])
 	case "logs":
 		args = logsCmd.ParseToArgs(os.Args[2:])
 	case "ps":
