@@ -55,7 +55,7 @@ Setup
     # or for the binary release
     cd /tmp
     rm wharfer_$(uname -m).tar.bz2
-    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.5.1/wharfer_$(uname -m).tar.bz2
+    wget https://github.com/ad-freiburg/wharfer/releases/download/v0.5.2/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
     sudo mv wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
 
