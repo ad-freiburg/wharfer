@@ -10,7 +10,7 @@ type NetworkCreate struct {
 }
 
 func (c *NetworkCreate) InitFlags() {
-	c.Cmd = flag.NewFlagSet("create", flag.ExitOnError)
+	c.Cmd = flag.NewFlagSet("network create", flag.ExitOnError)
 }
 
 func (c *NetworkCreate) ParseToArgs(rawArgs []string) []string {

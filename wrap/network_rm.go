@@ -10,7 +10,7 @@ type NetworkRemove struct {
 }
 
 func (c *NetworkRemove) InitFlags() {
-	c.Cmd = flag.NewFlagSet("rm", flag.ExitOnError)
+	c.Cmd = flag.NewFlagSet("network rm", flag.ExitOnError)
 }
 
 func (c *NetworkRemove) ParseToArgs(rawArgs []string) []string {
