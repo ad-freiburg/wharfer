@@ -50,15 +50,21 @@ Finally use the GitHub Releases mechanism to release a new version
 Setup
 -----
 
-    # For a build from source
-    sudo mv $GOPATH/bin/wharfer /usr/local/bin/
-    # or for the binary release
+For a build from source
+
+    go build -ldflags="-X main.version=$(git describe --always --long --dirty)"
+    sudo mv wharfer /usr/local/bin/
+    sudo chown root:docker /usr/local/bin/wharfer
+    sudo chmod g+s /usr/local/bin/wharfer
+
+Or for the binary release
+
     cd /tmp
     rm wharfer_$(uname -m).tar.bz2
     wget https://github.com/ad-freiburg/wharfer/releases/download/v0.5.2/wharfer_$(uname -m).tar.bz2
     tar -xavf wharfer_$(uname -m).tar.bz2
     sudo mv wharfer_$(uname -m)/wharfer /usr/local/bin/wharfer
-
+    rm -r wharfer_$(uname -m)
     sudo chown root:docker /usr/local/bin/wharfer
     sudo chmod g+s /usr/local/bin/wharfer
     wharfer ps
