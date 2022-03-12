@@ -26,6 +26,7 @@ var runCmd wrap.Run
 var psCmd wrap.Ps
 var killCmd wrap.Kill
 var rmCmd wrap.Rm
+var rmiCmd wrap.Rmi
 var loadCmd wrap.Load
 var saveCmd wrap.Save
 var logsCmd wrap.Logs
@@ -46,6 +47,7 @@ func init() {
 	saveCmd.InitFlags()
 	logsCmd.InitFlags()
 	rmCmd.InitFlags()
+	rmiCmd.InitFlags()
 	pullCmd.InitFlags()
 	imagesCmd.InitFlags()
 	networkCreateCmd.InitFlags()
@@ -61,19 +63,20 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "<COMMAND>|--version")
 		fmt.Fprintln(os.Stderr, "Commands:")
-		fmt.Fprintln(os.Stderr, "\tbuild")
-		fmt.Fprintln(os.Stderr, "\trun")
-		fmt.Fprintln(os.Stderr, "\tps")
-		fmt.Fprintln(os.Stderr, "\tkill")
-		fmt.Fprintln(os.Stderr, "\trm")
-		fmt.Fprintln(os.Stderr, "\tload")
-		fmt.Fprintln(os.Stderr, "\tsave")
-		fmt.Fprintln(os.Stderr, "\tlogs")
-		fmt.Fprintln(os.Stderr, "\tpull")
-		fmt.Fprintln(os.Stderr, "\timages")
-		fmt.Fprintln(os.Stderr, "\tnetwork")
 		fmt.Fprintln(os.Stderr, "\tattach")
+		fmt.Fprintln(os.Stderr, "\tbuild")
 		fmt.Fprintln(os.Stderr, "\texec")
+		fmt.Fprintln(os.Stderr, "\timages")
+		fmt.Fprintln(os.Stderr, "\tkill")
+		fmt.Fprintln(os.Stderr, "\tload")
+		fmt.Fprintln(os.Stderr, "\tlogs")
+		fmt.Fprintln(os.Stderr, "\tnetwork")
+		fmt.Fprintln(os.Stderr, "\tps")
+		fmt.Fprintln(os.Stderr, "\tpull")
+		fmt.Fprintln(os.Stderr, "\trm")
+		fmt.Fprintln(os.Stderr, "\trmi")
+		fmt.Fprintln(os.Stderr, "\trun")
+		fmt.Fprintln(os.Stderr, "\tsave")
 		os.Exit(1)
 	}
 
@@ -87,6 +90,8 @@ func main() {
 		args = killCmd.ParseToArgs(os.Args[2:])
 	case "rm":
 		args = rmCmd.ParseToArgs(os.Args[2:])
+	case "rmi":
+		args = rmiCmd.ParseToArgs(os.Args[2:])
 	case "save":
 		args = saveCmd.ParseToArgs(os.Args[2:])
 	case "load":
